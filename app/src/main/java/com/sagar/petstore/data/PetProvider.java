@@ -170,8 +170,6 @@ public class PetProvider extends ContentProvider {
             throw new IllegalArgumentException("Pet requires valid weight");
         }
 
-
-        // TODO: Insert a new pet into the pets database table with the given ContentValues
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
         long newRowId = database.insert(PetContract.PetEntry.TABLE_NAME, null, values);
@@ -181,17 +179,13 @@ public class PetProvider extends ContentProvider {
             return null;
         }
 
-        getContext().getContentResolver().notifyChange(uri, null);
+        Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
 
-        // Once we know the ID of the new row in the table,
-        // return the new URI with the ID appended to the end of it
         return ContentUris.withAppendedId(uri, newRowId);
     }
 
 
     private int updatePet(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        // If the {@link PetEntry#COLUMN_PET_NAME} key is present,
-        // check that the name value is not null.
         if (values.containsKey(PetContract.PetEntry.COLUMN_PET_NAME)) {
             String name = values.getAsString(PetContract.PetEntry.COLUMN_PET_NAME);
             if (name == null) {
@@ -199,8 +193,7 @@ public class PetProvider extends ContentProvider {
             }
         }
 
-        // If the {@link PetEntry#COLUMN_PET_GENDER} key is present,
-        // check that the gender value is valid.
+
         if (values.containsKey(PetContract.PetEntry.COLUMN_PET_GENDER)) {
             Integer gender = values.getAsInteger(PetContract.PetEntry.COLUMN_PET_GENDER);
             if (gender == null || !PetContract.PetEntry.isValidGender(gender)) {
@@ -208,8 +201,6 @@ public class PetProvider extends ContentProvider {
             }
         }
 
-        // If the {@link PetEntry#COLUMN_PET_WEIGHT} key is present,
-        // check that the weight value is valid.
         if (values.containsKey(PetContract.PetEntry.COLUMN_PET_WEIGHT)) {
             // Check that the weight is greater than or equal to 0 kg
             Integer weight = values.getAsInteger(PetContract.PetEntry.COLUMN_PET_WEIGHT);
@@ -218,25 +209,18 @@ public class PetProvider extends ContentProvider {
             }
         }
 
-        // No need to check the breed, any value is valid (including null).
-
-        // If there are no values to update, then don't try to update the database
         if (values.size() == 0) {
             return 0;
         }
 
-        // Otherwise, get writeable database to update the data
         SQLiteDatabase database = mDbHelper.getWritableDatabase();
 
-        // Perform the update on the database and get the number of rows affected
         int rowsUpdated = database.update(PetContract.PetEntry.TABLE_NAME, values, selection, selectionArgs);
 
-        // If 1 or more rows were updated, then notify all listeners that the data at the
-        // given URI has changed
         if (rowsUpdated != 0) {
-            getContext().getContentResolver().notifyChange(uri, null);
+            Objects.requireNonNull(getContext()).getContentResolver().notifyChange(uri, null);
         }
-        // Return the number of rows updated
+
         return rowsUpdated;
     }
 

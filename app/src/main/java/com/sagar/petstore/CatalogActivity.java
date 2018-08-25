@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -26,6 +27,8 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     private static final int PET_LOADER = 0;
 
     private ListView mListView;
+
+    private PetCursorAdapter mPetCursorAdapter;
 
 
     @Override
@@ -51,6 +54,9 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
 
         View emptyView = findViewById(R.id.empty_view);
         mListView.setEmptyView(emptyView);
+
+        mPetCursorAdapter = new PetCursorAdapter(this, null);
+        mListView.setAdapter(mPetCursorAdapter);
 
         // kick Off the loader.
         getSupportLoaderManager().initLoader(PET_LOADER, null, this);
@@ -105,17 +111,28 @@ public class CatalogActivity extends AppCompatActivity implements LoaderManager.
     @NonNull
     @Override
     public Loader<Cursor> onCreateLoader(int id, @Nullable Bundle args) {
-        return null;
+        String[] projection = {
+                PetContract.PetEntry._ID,
+                PetContract.PetEntry.COLUMN_PET_NAME,
+                PetContract.PetEntry.COLUMN_PET_BREED,
+        };
+
+        return new CursorLoader(this,
+                PetContract.PetEntry.CONTENT_URI,
+                projection,
+                null,
+                null,
+                null);
     }
 
     @Override
-    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor data) {
-
+    public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+        mPetCursorAdapter.swapCursor(cursor);
     }
 
     @Override
     public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-
+        mPetCursorAdapter.swapCursor(null);
     }
 
 

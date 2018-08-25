@@ -4,6 +4,7 @@
     <!-- Catalog Activity -->
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
     <string name="action_delete_all_entries">Delete All Pets</string>
+    <string name="unknown_breed">Unknown breed</string>
 
 
     <!-- Editor Activity-->
