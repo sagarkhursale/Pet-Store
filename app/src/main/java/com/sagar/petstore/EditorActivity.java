@@ -1,5 +1,7 @@
 package com.sagar.petstore;
 
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -9,6 +11,7 @@ import android.support.v4.app.NavUtils;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -101,6 +104,52 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
             actionBar.setTitle(title);
         }
     }
+
+    private boolean savePet() {
+        // Read from input fields
+        String nameString = mNameEditText.getText().toString().trim();
+        String breedString = mBreedEditText.getText().toString().trim();
+        String weightString = mWeightEditText.getText().toString().trim();
+        int weight = 0;
+        if (!TextUtils.isEmpty(weightString)) {
+            weight = Integer.parseInt(weightString);
+        }
+
+        if (mCurrentPetUri == null && TextUtils.isEmpty(nameString) && TextUtils.isEmpty(breedString) && mGender == PetEntry.GENDER_UNKNOWN) {
+            return false;
+        }
+
+        // Create a ContentValues object where column names are the keys,
+        // and pet attributes from the editor are the values.
+        ContentValues values = new ContentValues();
+        values.put(PetEntry.COLUMN_PET_NAME, nameString);
+        values.put(PetEntry.COLUMN_PET_BREED, breedString);
+        values.put(PetEntry.COLUMN_PET_GENDER, mGender);
+        values.put(PetEntry.COLUMN_PET_WEIGHT, weight);
+
+        if (mCurrentPetUri != null) {
+            int rowUpdated = getContentResolver().update(mCurrentPetUri, values, null, null);
+
+            if (rowUpdated != 0) {
+                Toast.makeText(this, "Pet updated.", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // inserting new pet.
+            Uri newUri = getContentResolver().insert(PetEntry.CONTENT_URI, values);
+
+            if (newUri == null) {
+                Toast.makeText(this, "Error with saving pet", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(this, "Pet saved", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return true;
+
+        // end
+    }
+
+
 
 
     @Override
