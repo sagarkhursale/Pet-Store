@@ -5,11 +5,13 @@
     <string name="action_insert_dummy_data">Insert Dummy Data</string>
     <string name="action_delete_all_entries">Delete All Pets</string>
     <string name="unknown_breed">Unknown breed</string>
+    <string name="empty_view_title_text">It\'s a bit lonely here…</string>
+    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
 
 
     <!-- Editor Activity-->
-    <string name="empty_view_title_text">It\'s a bit lonely here…</string>
-    <string name="empty_view_subtitle_text">Get started by adding a pet</string>
+    <string name="editor_activity_title_new_pet">Add a Pet</string>
+    <string name="editor_activity_title_edit_pet">Edit a Pet</string>
     <string name="action_save">Save</string>
     <string name="action_delete">Delete</string>
     <string name="category_overview">Overview</string>

@@ -2,6 +2,7 @@ package com.sagar.petstore;
 
 import android.net.Uri;
 import android.support.v4.app.NavUtils;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -17,6 +18,9 @@ import com.sagar.petstore.data.PetContract.PetEntry;
 
 
 public class EditorActivity extends AppCompatActivity {
+
+    private static final int PET_LOADER = 1;
+
     /*Views*/
     private EditText mNameEditText;
     private EditText mBreedEditText;
@@ -33,6 +37,16 @@ public class EditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
 
+        mCurrentPetUri = getIntent().getData();
+        if (mCurrentPetUri != null) {
+            setTitle(getString(R.string.editor_activity_title_edit_pet));
+            // kick off loader.
+            getSupportLoaderManager().initLoader(PET_LOADER, null, this);
+        } else {
+            setTitle(getString(R.string.editor_activity_title_new_pet));
+            invalidateOptionsMenu();
+        }
+
         mNameEditText = findViewById(R.id.edit_pet_name);
         mBreedEditText = findViewById(R.id.edit_pet_breed);
         mWeightEditText = findViewById(R.id.edit_pet_weight);
@@ -42,6 +56,7 @@ public class EditorActivity extends AppCompatActivity {
 
         // end
     }
+
 
     /* Drop-down for gender */
     private void setupSpinner() {
@@ -74,6 +89,13 @@ public class EditorActivity extends AppCompatActivity {
         });
     }
 
+    private void setTitle(String title) {
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setTitle(title);
+        }
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,6 +120,17 @@ public class EditorActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        // If this is a new pet, hide the "Delete" menu item.
+        if (mCurrentPetUri == null) {
+            MenuItem menuItem = menu.findItem(R.id.action_delete);
+            menuItem.setVisible(false);
+        }
+        return true;
     }
 
 
