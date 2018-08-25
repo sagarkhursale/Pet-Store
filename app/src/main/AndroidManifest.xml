@@ -26,6 +26,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".CatalogActivity"/>
         </activity>
+        <provider
+            android:authorities="com.sagar.petstore"
+            android:name=".data.PetProvider"
+            android:exported="false"
+            />
     </application>
 
 </manifest>
