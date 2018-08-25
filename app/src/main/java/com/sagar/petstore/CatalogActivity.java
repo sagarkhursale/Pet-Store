@@ -1,5 +1,6 @@
 package com.sagar.petstore;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
-
 
 
 public class CatalogActivity extends AppCompatActivity {
@@ -28,8 +28,11 @@ public class CatalogActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                /*Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+                Intent intent=new Intent(CatalogActivity.this,EditorActivity.class);
+                startActivity(intent);
+
             }
         });
 
@@ -53,7 +56,7 @@ public class CatalogActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        switch (id){
+        switch (id) {
 
             case R.id.action_insert_dummy_data:
 
@@ -62,7 +65,6 @@ public class CatalogActivity extends AppCompatActivity {
             case R.id.action_delete_all_entries:
                 break;
         }
-
 
 
         return super.onOptionsItemSelected(item);
