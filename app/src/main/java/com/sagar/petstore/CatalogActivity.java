@@ -9,16 +9,17 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 
+
 public class CatalogActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catalog);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -26,7 +27,10 @@ public class CatalogActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // end
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,16 +41,23 @@ public class CatalogActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id){
+
+            case R.id.action_insert_dummy_data:
+
+                break;
+
+            case R.id.action_delete_all_entries:
+                break;
         }
+
+
 
         return super.onOptionsItemSelected(item);
     }
+
+
+    // END
 }

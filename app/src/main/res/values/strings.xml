@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">Pet Store</string>
-    <string name="action_settings">Settings</string>
+
+    <!-- Catalog Activity -->
+
+    <string name="action_insert_dummy_data">Insert Dummy Data</string>
+    <string name="action_delete_all_entries">Delete All Pets</string>
+
+
+    <!-- Editor Activity-->
+
 </resources>
