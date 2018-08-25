@@ -23,10 +23,11 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
 import com.sagar.petstore.data.PetContract.PetEntry;
 
 
-public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class EditorActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int PET_LOADER = 1;
 
@@ -149,7 +150,38 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
         // end
     }
 
+    private void deletePet() {
+        int rowsDeleted = getContentResolver().delete(mCurrentPetUri, null, null);
 
+        if (rowsDeleted != 0) {
+            Toast.makeText(this, "Pet deleted", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Error deleting pet!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void showDeleteConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.delete_dialog_msg);
+        builder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                //  delete the pet.
+                deletePet();
+                dialog.dismiss();
+                finish();
+            }
+        });
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                if (dialog != null) {
+                    dialog.dismiss();
+                }
+            }
+        });
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
 
 
     @Override
@@ -162,11 +194,15 @@ public class EditorActivity extends AppCompatActivity implements LoaderManager.L
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-
+                if (savePet()) {
+                    finish();
+                } else {
+                    Toast.makeText(this, "Can't save, fill the details!", Toast.LENGTH_SHORT).show();
+                }
                 return true;
 
             case R.id.action_delete:
-
+                showDeleteConfirmationDialog();
                 return true;
 
             case android.R.id.home:
